@@ -22,7 +22,21 @@ heatmap +
 ggplot((data = tesla_data), aes(color = AutoPilot.claimed, x= State, y= Deaths)) + geom_point() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-#This is another plot of the United States' deaths while also showing how many accidents occured
+#This is another plot of the United States' deaths while also showing how many accidents ocurred
 # in each state.
 ggplot((data = tesla_data), aes(x= State, y= Deaths)) + geom_bin_2d() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+#######################################################################
+# The second dataset analysis
+tesla_data2 <- read.csv("tesla-deaths.csv")
+
+#This is a scatterplot thats hows the number of deaths worldwide.
+ggplot((data = tesla_data2), aes(alpha = 0.3, x= country, y= deaths)) + geom_point() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+#This is a plot showing the number of deaths in each country and easily displays where the most concentrated
+#number of deaths were.
+ggplot((data = tesla_data2), aes(x= country, y= deaths)) + geom_bin_2d() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
