@@ -1,4 +1,5 @@
 library(ggplot2)
+library(shiny)
 
 #This line of code reads the .csv file
 tesla_data <- read.csv("Tesla Deaths - Deaths (3).csv")
@@ -40,3 +41,40 @@ ggplot((data = tesla_data2), aes(alpha = 0.3, x= country, y= deaths)) + geom_poi
 #number of deaths were.
 ggplot((data = tesla_data2), aes(x= country, y= deaths)) + geom_bin_2d() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+#######################################################################
+# Shiny App Framework
+ui <- fluidPage(
+  
+  titlePanel("Tesla Car Deaths"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput(inputId = "bins",
+                  label = "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30)
+    ),
+    mainPanel(
+      plotOutput(outputId = "distPlot")
+    )
+  )
+)
+
+server <- function(input, output) {
+  output$distPlot <- renderPlot({
+    
+    x <- tesla_data$Country
+    y <- tesla_data$Deaths
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    
+    hist(x, breaks = bins, col = "#007bc2", border = "white",
+         xlab = "Country",
+         ylab = "Deaths",
+         main = "Histogram of Tesla car Related Deaths in all Countries")
+  })
+}
+
+shinyApp(ui = ui, server = server)
+
+#App still has issues that need to be fixed but this is the framework for the shiny app.
